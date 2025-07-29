@@ -1,6 +1,82 @@
+body {
+    background-color: rgba(206,222,228,0.945);
+}
+
 h1 {
-    font-family: fantasy;
-    font-size: 200px;
-    color: #00008b;
-    text-align: center
+    color: white;
+    text-align: center;
+    font-size: 100px;
+}
+
+p {
+    text-align: center;
+    font-family: verdana;
+    font-size: 20px;
+  }
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.center-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+
+#start8th {
+    font-size: 2rem;
+    padding: 1rem 2rem;
+    cursor: pointer;
+}
+
+.container {
+    text-align: center;
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#startBtn {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 auto;
+    display: block;
+}
+
+#startBtn:hover {
+    background-color: #45a049;
 }
