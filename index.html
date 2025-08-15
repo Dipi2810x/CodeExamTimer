@@ -1,35 +1,52 @@
 <!DOCTYPE html>
+
+<!--Dear Ezra, i hope you are well. I am sorry i couldnt be there to help you at the Steam@Maties workshop.
+I know you are new to code so i have made a simple structure of how you can make the login work
+and keep the results. 
+Your "teacher username was hardcoded meaning it only works for the username and password in this code - it is not secure
+Your Username is : EDExpo
+Your password is : EskomExpo2025"
+
+Once you have adjusted the code and styles to your liking you should update it on your
+github account. Then it should work on your website link. I have tried to add as many comments as posisble so you can understand.
+If you need any help dont hesitate to message me. I think we should meet at your school if you have time and need to meet. 
+I am more than willing to visit you.
+
+Please feel free to delete my comments when you dont need them-->
 <html>
 <head>
     <title>Digital Timer</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<!-- Simple Login Form -->
+<h1>Digital timer</h1>
+<!-- Simple Login Form- and a very unsecure but working one-->
 <div id="loginDiv" class="container">
     <h2>Login</h2>
     <input type="text" id="username" placeholder="Username"><br>
     <input type="password" id="password" placeholder="Password"><br>
     <button id="loginBtn">Login</button>
+    <button id="backToTimerBtn" style="background-color:#888;margin-top:10px;">Back</button>
     <p id="loginMsg" style="color:red;"></p>
 </div>
 
 <!-- Timer and Student Input (hidden at first) -->
-<div id="timerDiv" class="container" style="display:none;">
+<div id="timerDiv" class="container" style="display:none;"> <!--Im using many div bloks to make code blocks of what you need-->
     <h2>Exam Timer</h2>
     <div id="timer" style="font-size:2em;">00:00:00</div>
     <input type="text" id="studentNum" placeholder="Enter Student Number"><br><br>
     <button id="pauseBtn">Pause</button>
+    <button id="resetBtn">Reset</button>
     <button id="doneBtn">Done</button>
     <button id="homeBtn">Back to Home</button>
     <p id="doneMsg" style="color:green;"></p>
 </div>
 
-<!-- Student Results (hidden at first) -->
+<!-- Student Results (which you can only see when you (or your teacher ) logs in ) -->
 <div id="resultsDiv" class="container" style="display:none;">
     <h2>Student Results</h2>
     <ul id="resultsList"></ul>
+    <button id="clearResultsBtn" style="background-color:#d9534f;margin-bottom:10px;">Clear Results</button>
     <button id="logoutBtn">Logout</button>
 </div>
 
@@ -40,18 +57,30 @@ document.getElementById('loginBtn').onclick = function() {
     var user = document.getElementById('username').value;
     var pass = document.getElementById('password').value;
     // Check if correct
-    if(user === "EDExpo" && pass === "EskomExpo2025") {
+    if(user === "EDExpo" && pass === "EskomExpo2025") {  <!-- The is the hardcoded username and password. It means you can only login if the input matches these details that you set specifically-->
         document.getElementById('loginDiv').style.display = "none";
         showResults();
-    } else {
+    } 
+
+    // You can add another user by saying ELSE if (user == "yourOtherUsername" && pass == "yourOtherPassword") { ... }
+
+    else {
         document.getElementById('loginMsg').innerText = "Wrong username or password!";
     }
 };
 
-// --- Timer Variables ---
+// --- Back button from login to timer --- added this so you can go back i you need to 
+document.getElementById('backToTimerBtn').onclick = function() {
+    document.getElementById('loginDiv').style.display = "none";
+    document.getElementById('timerDiv').style.display = "block";
+    resetTimer();
+    startTimer();
+};
+
+// --- Timer Variables --- this makes the varibales that you will use to calculate and make your timer work
 let timerInterval;
 let seconds = 0;
-let running = false;
+let running = false; // this function says when running = false dont make the timer start and when its true the timer will tick
 
 // --- Show Timer Screen ---
 function showTimer() {
@@ -91,9 +120,93 @@ function resetTimer() {
     displayTime();
     document.getElementById('studentNum').value = "";
     document.getElementById('doneMsg').innerText = "";
+    document.getElementById('pauseBtn').innerText = "Pause";
 }
 
+// --- Reset Button Event ---
+document.getElementById('resetBtn').onclick = function() {
+    resetTimer();
+    startTimer();
+};
+
+// --- Displays the timer ---
 function displayTime() {
     let hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
     let mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-    let secs
+    let secs = String(seconds % 60).padStart(2, '0');
+    document.getElementById('timer').innerText = `${hrs}:${mins}:${secs}`;
+}
+
+// --- This is the code that makes your button work when you press it. otherwise itll just stay the same if you click it
+document.getElementById('pauseBtn').onclick = function() {
+    if (running) {
+        pauseTimer();
+        this.innerText = "Resume";
+    } else {
+        startTimer();
+        this.innerText = "Pause";
+    }
+};
+
+document.getElementById('doneBtn').onclick = function() {
+    pauseTimer();
+    let studentNum = document.getElementById('studentNum').value.trim();
+    if (studentNum === "") {
+        document.getElementById('doneMsg').innerText = "Please enter a student number!";
+        return;
+    }
+    // Save result to localStorage
+    let results = JSON.parse(localStorage.getItem('results') || "[]");
+    results.push({student: studentNum, time: document.getElementById('timer').innerText});
+    localStorage.setItem('results', JSON.stringify(results));
+    document.getElementById('doneMsg').innerText = "Result saved!";
+    resetTimer();
+};
+
+document.getElementById('homeBtn').onclick = function() {
+    document.getElementById('timerDiv').style.display = "none";
+    document.getElementById('loginDiv').style.display = "block";
+    resetTimer();
+};
+
+document.getElementById('logoutBtn').onclick = function() {
+    document.getElementById('resultsDiv').style.display = "none";
+    document.getElementById('loginDiv').style.display = "block";
+};
+
+// --- Clear Results Button ---
+document.getElementById('clearResultsBtn').onclick = function() {
+    if (confirm("Are you sure you want to clear all results?")) {
+        localStorage.removeItem('results');
+        loadResults();
+    }
+};
+
+// --- Show Timer Screen for Students ---
+window.onload = function() {
+    // If not logged in, show timer for students
+    document.getElementById('loginDiv').style.display = "none";
+    document.getElementById('timerDiv').style.display = "block";
+    document.getElementById('resultsDiv').style.display = "none";
+    resetTimer();
+    startTimer();
+};
+
+// --- Load Results for Login so you or your teacher can see it  ---
+// there is also a clear timer if you want to get rid of the old results 
+function loadResults() {
+    let results = JSON.parse(localStorage.getItem('results') || "[]");
+    let list = document.getElementById('resultsList');
+    list.innerHTML = "";
+    results.forEach(function(r) {
+        let li = document.createElement('li');
+        li.innerText = "Student: " + r.student + " | Time: " + r.time;
+        list.appendChild(li);
+    });
+}
+// hope this helped. Let me know if you have any questions!
+</script>
+
+</body>
+</html>
+
