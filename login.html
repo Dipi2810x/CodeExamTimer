@@ -1,43 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Digital Timer</title>
-<link rel="stylesheet" href="style.css">
+    <title>Digital Timer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Login Page</h1>
-
-<div class="container" id="login-container">
-    <h1>Login</h1>
-    <input type="text" id="username" placeholder="Username" required><br>
-    <input type="password" id="password" placeholder="Password" required><br>
-    <button onclick="login()">Login</button>
+<div class="container" style="margin-top:100px;">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button id="loginBtn">Login</button>
+    <button id="backBtn" style="background-color:#888;margin-top:10px;">Back</button>
+    <p id="loginMsg" style="color:red;"></p>
 </div>
 
 <script>
-    let loggedIn = false;
-    let stopwatchInterval;
-    let elapsedTime = 0; // in seconds
-
-    // Function to handle login
-    function login() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        // For demo purposes, any login will succeed
-        if (username && password) {
-            loggedIn = true;
-            document.getElementById('login-container').style.display = 'none';
-            document.getElementById('stopwatch-container').style.display = 'block';
-            elapsedTime = 0; // Reset stopwatch when logged in
-            updateTimeDisplay();
-        } else {
-            alert("Please enter both username and password.");
-        }
+// Simple login logic
+document.getElementById('loginBtn').onclick = function() {
+    var user = document.getElementById('username').value;
+    var pass = document.getElementById('password').value;
+    if(user === "EDExpo" && pass === "EskomExpo2025") {
+        window.location.href = "results.html"; // or show results page
+    } else {
+        document.getElementById('loginMsg').innerText = "Wrong username or password!";
     }
+};
+// Back button returns to home page
+document.getElementById('backBtn').onclick = function() {
+    window.location.href = "index.html";
+};
 </script>
-
 
 </body>
 </html>
