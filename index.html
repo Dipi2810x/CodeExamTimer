@@ -5,7 +5,7 @@ I know you are new to code so i have made a simple structure of how you can make
 and keep the results. 
 Your "teacher username was hardcoded meaning it only works for the username and password in this code - it is not secure
 Your Username is : EDExpo
-Your password is : EskomExpo2025"
+Your password is : EskomExpo2025
 
 Once you have adjusted the code and styles to your liking you should update it on your
 github account. Then it should work on your website link. I have tried to add as many comments as posisble so you can understand.
@@ -35,6 +35,7 @@ Please feel free to delete my comments when you dont need them-->
     <h2>Exam Timer</h2>
     <div id="timer" style="font-size:2em;">00:00:00</div>
     <input type="text" id="studentNum" placeholder="Enter Student Number"><br><br>
+    <!-- Removed Start button since timer will start automatically -->
     <button id="pauseBtn">Pause</button>
     <button id="resetBtn">Reset</button>
     <button id="doneBtn">Done</button>
@@ -126,7 +127,7 @@ function resetTimer() {
 // --- Reset Button Event ---
 document.getElementById('resetBtn').onclick = function() {
     resetTimer();
-    startTimer();
+    // No need to enable start button
 };
 
 // --- Displays the timer ---
@@ -189,8 +190,19 @@ window.onload = function() {
     document.getElementById('timerDiv').style.display = "block";
     document.getElementById('resultsDiv').style.display = "none";
     resetTimer();
-    startTimer();
+    // Do NOT call startTimer() here
 };
+
+// Remove Start button event and disable logic
+
+// --- Start timer automatically after student number is entered ---
+document.getElementById('studentNum').addEventListener('input', function() {
+    let studentNum = this.value.trim();
+    if (studentNum !== "" && !running) {
+        document.getElementById('doneMsg').innerText = "";
+        startTimer();
+    }
+});
 
 // --- Load Results for Login so you or your teacher can see it  ---
 // there is also a clear timer if you want to get rid of the old results 
