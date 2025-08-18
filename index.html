@@ -35,7 +35,7 @@ Please feel free to delete my comments when you dont need them-->
     <h2>Exam Timer</h2>
     <div id="timer" style="font-size:2em;">00:00:00</div>
     <input type="text" id="studentNum" placeholder="Enter Student Number"><br><br>
-    <!-- Removed Start button since timer will start automatically -->
+    <button id="startBtn">Start</button>
     <button id="pauseBtn">Pause</button>
     <button id="resetBtn">Reset</button>
     <button id="doneBtn">Done</button>
@@ -193,16 +193,26 @@ window.onload = function() {
     // Do NOT call startTimer() here
 };
 
-// Remove Start button event and disable logic
+// Remove the automatic timer start on studentNum input
+// document.getElementById('studentNum').addEventListener('input', ...);
 
-// --- Start timer automatically after student number is entered ---
-document.getElementById('studentNum').addEventListener('input', function() {
-    let studentNum = this.value.trim();
-    if (studentNum !== "" && !running) {
-        document.getElementById('doneMsg').innerText = "";
-        startTimer();
+// --- Start timer only after Start button is pressed and student number is entered ---
+document.getElementById('startBtn').onclick = function() {
+    let studentNum = document.getElementById('studentNum').value.trim();
+    if (studentNum === "") {
+        document.getElementById('doneMsg').innerText = "Please enter a student number before starting!";
+        return;
     }
-});
+    document.getElementById('doneMsg').innerText = "";
+    startTimer();
+    this.disabled = true; // Disable start button until reset
+};
+
+// Enable Start button again on reset
+document.getElementById('resetBtn').onclick = function() {
+    resetTimer();
+    document.getElementById('startBtn').disabled = false;
+};
 
 // --- Load Results for Login so you or your teacher can see it  ---
 // there is also a clear timer if you want to get rid of the old results 
